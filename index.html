@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pt-BR" id="html-lang">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">VilorChat Premium</title>
+  <script src="https://js.puter.com/v2/"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #6e48aa;
+      --secondary: #9d50bb;
+      --accent: #ff6b6b;
+      --dark: #1a1a2e;
+      --light: #f8f9fa;
+      --success: #4CAF50;
+      --warning: #FFC107;
+      --error: #F44336;
+      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    }
+    
+    h1, h2, h3 {
+      color: var(--dark);
+      font-weight: 600;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 50px;
+      height: 4px;
+      background: var(--gradient);
+      border-radius: 2px;
+    }
+    
+    .language-selector {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    
+    select {
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      background: white;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 1em;
+    }
+    
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(110, 72, 170, 0.2);
+    }
+    
+    .tab-buttons {
+      display: flex;
+      margin-bottom: 25px;
+      border-bottom: 2px solid #eee;
+    }
+    
+    .tab-btn {
+      padding: 12px 25px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      color: #666;
+      position: relative;
+      transition: all 0.3s;
+    }
+    
+    .tab-btn:hover {
+      color: var(--primary);
+    }
+    
+    .tab-btn.active {
+      color: var(--primary);
+    }
+    
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--gradient);
+      border-radius: 3px 3px 0 0;
+    }
+    
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(110, 72, 170, 0.2);
+    }
+    
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    button {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(110, 72, 170, 0.3);
+    }
+    
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(110, 72, 170, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(1px);
+    }
+    
+    button.secondary {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    
+    button.secondary:hover {
+      background: rgba(110, 72, 170, 0.05);
+    }
+    
+    .media-container {
+      margin-top: 30px;
+      text-align: center;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f9f9f9;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    
+    .media-container img, .media-container video {
+      max-width: 100%;
+      max-height: 600px;
+      border-radius: 8px;
+      margin: 0 auto;
+      display: block;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    
+    .media-container img:hover, .media-container video:hover {
+      transform: scale(1.02);
+    }
+    
+    .media-container video {
+      width: 100%;
+      height: auto;
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    button .loading {
+      border-top-color: var(--primary);
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    #chat-area {
+      height: 400px;
+      overflow-y: auto;
+      border: 2px solid #e0e0e0;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      background: white;
+      scroll-behavior: smooth;
+    }
+    
+    #chat-area::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    #chat-area::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    
+    #chat-area::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+    
+    #chat-area::-webkit-scrollbar-thumb:hover {
+      background: var(--secondary);
+    }
+    
+    .message {
+      margin-bottom: 15px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      max-width: 85%;
+      position: relative;
+      animation: messageIn 0.3s ease;
+      line-height: 1.5;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    @keyframes messageIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .user-message {
+      background: var(--gradient);
+      color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .bot-message {
+      background: #f5f5f5;
+      margin-right: auto;
+      border-bottom-left-radius: 4px;
+    }
+    
+    .error-message {
+      color: var(--error);
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(244, 67, 54, 0.1);
+      border-radius: 8px;
+      border-left: 4px solid var(--error);
+    }
+    
+    .success-message {
+      color: var(--success);
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(76, 175, 80, 0.1);
+      border-radius: 8px;
+      border-left: 4px solid var(--success);
+    }
+    
+    .info-message {
+      color: var(--primary);
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(110, 72, 170, 0.1);
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .model-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .model-btn {
+      padding: 10px 15px;
+      border-radius: 8px;
+      background: white;
+      border: 2px solid #e0e0e0;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    
+    .model-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .model-btn.active {
+      background: var(--gradient);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .media-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+    
+    .media-actions button {
+      padding: 8px 15px;
+      font-size: 14px;
+    }
+    
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background-color: var(--dark);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 10px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 14px;
+      font-weight: normal;
+    }
+    
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .tab-buttons {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 5px;
+      }
+      
+      .message {
+        max-width: 90%;
+      }
+      
+      .media-container {
+        min-height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="language-selector">
+    <select id="language-select" onchange="changeLanguage()">
+      <option value="pt">Português</option>
+      <option value="ru">Русский</option>
+      <option value="en">English</option>
+      <option value="es">Español</option>
+      <option value="zh">中文</option>
+    </select>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h1 id="main-title">VilorChat Premium</h1>
+      <p id="main-subtitle">IA Avançada com Geradores de Imagem, Vídeos e Modelos de Linguagem</p>
+    </div>
+
+    <div class="card">
+      <h2 id="llm-title">Chat com IA</h2>
+      
+      <div class="model-selector">
+        <button class="model-btn active" data-model="openrouter:openai/gpt-3.5-turbo">GPT-3.5 Turbo</button>
+        <button class="model-btn" data-model="openrouter:meta-llama/llama-3.1-8b-instruct">Llama 3 (8B)</button>
+        <button class="model-btn" data-model="openrouter:anthropic/claude-3-haiku">Claude 3 Haiku</button>
+      </div>
+      
+      <div id="chat-area"></div>
+      
+      <textarea id="user-input" placeholder="Digite sua mensagem..." data-placeholder-pt="Digite sua mensagem..." data-placeholder-ru="Введите ваше сообщение..." data-placeholder-en="Type your message..." data-placeholder-es="Escribe tu mensaje..." data-placeholder-zh="输入您的消息..."></textarea>
+      
+      <div style="display: flex; gap: 10px;">
+        <button onclick="sendMessage()" id="send-btn">
+          <i class="fas fa-paper-plane"></i> <span id="btn-text">Enviar</span>
+          <span id="btn-loader" class="loading" style="display:none;"></span>
+        </button>
+        
+        <button onclick="clearChat()" class="secondary">
+          <i class="fas fa-trash"></i> Limpar
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab('images')" id="images-tab">
+          <i class="fas fa-image"></i> <span id="images-tab-text">Imagens</span>
+        </button>
+        <button class="tab-btn" onclick="openTab('videos')" id="videos-tab">
+          <i class="fas fa-video"></i> <span id="videos-tab-text">Vídeos</span>
+        </button>
+      </div>
+
+      <div id="images" class="tab-content active">
+        <h2 id="images-title"><i class="fas fa-image"></i> Gerador de Imagens</h2>
+        
+        <select id="imageService">
+          <option value="pollinations">1. Pollinations AI (IA Avançada)</option>
+          <option value="unsplash">2. Unsplash (Fotos Reais HD)</option>
+          <option value="picsum">3. Lorem Picsum (Placeholders)</option>
+          <option value="placebeard">4. PlaceBeard (Divertido)</option>
+          <option value="placekitten">5. PlaceKitten (Gatos)</option>
+          <option value="placedog">6. PlaceDog (Cachorros)</option>
+          <option value="fakeimg">7. FakeImg (Personalizado)</option>
+          <option value="dummyimage">8. DummyImage (Simples)</option>
+          <option value="picsum2">9. Picsum Photos (Aleatório)</option>
+          <option value="placeholder">10. Placeholder (Básico)</option>
+        </select>
+        
+        <div class="tooltip" style="width: 100%;">
+          <input type="text" id="imagePrompt" placeholder="Descreva a imagem com detalhes..." data-placeholder-pt="Descreva a imagem com detalhes..." data-placeholder-ru="Подробно опишите изображение..." data-placeholder-en="Describe the image in detail..." data-placeholder-es="Describe la imagen en detalle..." data-placeholder-zh="详细描述图像...">
+          <span class="tooltiptext">Seja o mais descritivo possível para melhores resultados</span>
+        </div>
+        
+        <div style="display: flex; gap: 10px;">
+          <button onclick="generateImage()" id="generate-image-btn">
+            <i class="fas fa-magic"></i> <span id="generate-image-text">Gerar Imagem</span>
+          </button>
+          
+          <button onclick="randomPrompt('image')" class="secondary">
+            <i class="fas fa-random"></i> Aleatório
+          </button>
+        </div>
+        
+        <div class="media-container" id="imageResult">
+          <p id="image-placeholder"><i class="fas fa-image fa-3x" style="color: #e0e0e0; margin-bottom: 15px;"></i><br>Sua imagem aparecerá aqui</p>
+        </div>
+        
+        <div class="media-actions" id="image-actions" style="display: none;">
+          <button onclick="downloadMedia('image')" class="secondary">
+            <i class="fas fa-download"></i> Baixar
+          </button>
+          <button onclick="shareMedia('image')" class="secondary">
+            <i class="fas fa-share-alt"></i> Compartilhar
+          </button>
+        </div>
+      </div>
+
+      <div id="videos" class="tab-content">
+        <h2 id="videos-title"><i class="fas fa-video"></i> Gerador de Vídeos</h2>
+        
+        <select id="videoService">
+          <option value="pexels">1. Pexels (Natureza)</option>
+          <option value="pixabay">2. Pixabay (Stock)</option>
+          <option value="coverr">3. Coverr (Abstrato)</option>
+          <option value="lifeofvids">4. Life of Vids (Realista)</option>
+          <option value="videvo">5. Videvo (Variado)</option>
+        </select>
+        
+        <div class="tooltip" style="width: 100%;">
+          <input type="text" id="videoPrompt" placeholder="Tema do vídeo (ex: praia, cidade, animais)..." data-placeholder-pt="Tema do vídeo..." data-placeholder-ru="Тема видео..." data-placeholder-en="Video theme..." data-placeholder-es="Tema del video..." data-placeholder-zh="视频主题...">
+          <span class="tooltiptext">Digite palavras-chave relacionadas ao vídeo que deseja</span>
+        </div>
+        
+        <button onclick="generateVideo()" id="generate-video-btn">
+          <i class="fas fa-film"></i> <span id="generate-video-text">Gerar Vídeo</span>
+        </button>
+        
+        <div class="media-container" id="videoResult">
+          <p id="video-placeholder"><i class="fas fa-video fa-3x" style="color: #e0e0e0; margin-bottom: 15px;"></i><br>Seu vídeo aparecerá aqui</p>
+        </div>
+        
+        <div class="media-actions" id="video-actions" style="display: none;">
+          <button onclick="downloadMedia('video')" class="secondary">
+            <i class="fas fa-download"></i> Baixar
+          </button>
+          <button onclick="shareMedia('video')" class="secondary">
+            <i class="fas fa-share-alt"></i> Compartilhar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====== CONFIGURAÇÕES ======
+    const translations = {
+      pt: {
+        "main-title": "VilorChat Premium",
+        "main-subtitle": "IA Avançada com Geradores de Imagem, Vídeos e Modelos de Linguagem",
+        "llm-title": "Chat com IA",
+        "images-title": "Gerador de Imagens",
+        "videos-title": "Gerador de Vídeos",
+        "btn-text": "Enviar",
+        "generate-image-text": "Gerar Imagem",
+        "generate-video-text": "Gerar Vídeo",
+        "image-placeholder": "Sua imagem aparecerá aqui",
+        "video-placeholder": "Seu vídeo aparecerá aqui",
+        "images-tab-text": "Imagens",
+        "videos-tab-text": "Vídeos"
+      },
+      en: {
+        "main-title": "VilorChat Premium",
+        "main-subtitle": "Advanced AI with Image Generators, Videos and Language Models",
+        "llm-title": "AI Chat",
+        "images-title": "Image Generator",
+        "videos-title": "Video Generator",
+        "btn-text": "Send",
+        "generate-image-text": "Generate Image",
+        "generate-video-text": "Generate Video",
+        "image-placeholder": "Your image will appear here",
+        "video-placeholder": "Your video will appear here",
+        "images-tab-text": "Images",
+        "videos-tab-text": "Videos"
+      },
+      es: {
+        "main-title": "VilorChat Premium",
+        "main-subtitle": "IA avanzada con generadores de imágenes, videos y modelos de lenguaje",
+        "llm-title": "Chat con IA",
+        "images-title": "Generador de Imágenes",
+        "videos-title": "Generador de Videos",
+        "btn-text": "Enviar",
+        "generate-image-text": "Generar Imagen",
+        "generate-video-text": "Generar Video",
+        "image-placeholder": "Tu imagen aparecerá aquí",
+        "video-placeholder": "Tu video aparecerá aquí",
+        "images-tab-text": "Imágenes",
+        "videos-tab-text": "Videos"
+      },
+      ru: {
+        "main-title": "VilorChat Premium",
+        "main-subtitle": "Продвинутый ИИ с генераторами изображений, видео и языковыми моделями",
+        "llm-title": "Чат с ИИ",
+        "images-title": "Генератор изображений",
+        "videos-title": "Генератор видео",
+        "btn-text": "Отправить",
+        "generate-image-text": "Создать изображение",
+        "generate-video-text": "Создать видео",
+        "image-placeholder": "Здесь появится ваше изображение",
+        "video-placeholder": "Здесь появится ваше видео",
+        "images-tab-text": "Изображения",
+        "videos-tab-text": "Видео"
+      },
+      zh: {
+        "main-title": "VilorChat Premium",
+        "main-subtitle": "具有图像生成器、视频和语言模型的高级AI",
+        "llm-title": "AI聊天",
+        "images-title": "图像生成器",
+        "videos-title": "视频生成器",
+        "btn-text": "发送",
+        "generate-image-text": "生成图像",
+        "generate-video-text": "生成视频",
+        "image-placeholder": "您的图像将出现在这里",
+        "video-placeholder": "您的视频将出现在这里",
+        "images-tab-text": "图像",
+        "videos-tab-text": "视频"
+      }
+    };
+
+    // Serviços de Imagem com APIs públicas
+    const imageServices = {
+      pollinations: prompt => `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt || 'a beautiful landscape')}?width=800&height=500&nologo=true`,
+      unsplash: prompt => `https://source.unsplash.com/800x500/?${prompt ? encodeURIComponent(prompt) : 'random'}`,
+      picsum: () => `https://picsum.photos/800/500?random=${Math.random()}`,
+      placebeard: () => `https://placebeard.it/800/500/${Math.random()}`,
+      placekitten: () => `https://placekitten.com/800/500`,
+      placedog: () => `https://placedog.net/800/500?random=${Math.random()}`,
+      fakeimg: prompt => `https://fakeimg.pl/800x500/?text=${encodeURIComponent(prompt ? prompt.substring(0, 30) : 'Sample+Image')}`,
+      dummyimage: prompt => `https://dummyimage.com/800x500/cccccc/000000&text=${encodeURIComponent(prompt ? prompt.substring(0, 30) : 'Sample+Image')}`,
+      picsum2: () => `https://picsum.photos/800/500?image=${Math.floor(Math.random() * 1000)}`,
+      placeholder: () => `https://via.placeholder.com/800x500.png?text=${encodeURIComponent("Sample+Image")}`
+    };
+
+    // Serviços de Vídeo com APIs públicas
+    const videoServices = {
+      pexels: prompt => {
+        const videos = [
+          'https://player.vimeo.com/video/320012617', // Praia
+          'https://player.vimeo.com/video/320012616', // Floresta
+          'https://player.vimeo.com/video/320012619', // Montanhas
+          'https://player.vimeo.com/video/320012618', // Cachoeira
+          'https://player.vimeo.com/video/320012620'  // Cidade
+        ];
+        return videos[Math.floor(Math.random() * videos.length)];
+      },
+      pixabay: prompt => {
+        const videos = [
+          'https://player.vimeo.com/video/818490281', // Natureza
+          'https://player.vimeo.com/video/824804225', // Cidade
+          'https://player.vimeo.com/video/353963087', // Abstrato
+          'https://player.vimeo.com/video/427179745', // Pessoas
+          'https://player.vimeo.com/video/151715092'  // Animais
+        ];
+        return videos[Math.floor(Math.random() * videos.length)];
+      },
+      coverr: () => 'https://coverr.co/videos/beach-clouds-daytime-DFJXG3jJuP',
+      lifeofvids: () => 'https://player.vimeo.com/video/151715092',
+      videvo: () => 'https://player.vimeo.com/video/371594396'
+    };
+
+    // ====== FUNÇÕES PRINCIPAIS ======
+    function changeLanguage() {
+      const lang = document.getElementById('language-select').value;
+      localStorage.setItem('language', lang);
+      applyTranslations(lang);
+    }
+
+    function loadLanguage() {
+      const savedLang = localStorage.getItem('language') || 'pt';
+      document.getElementById('language-select').value = savedLang;
+      applyTranslations(savedLang);
+    }
+
+    function applyTranslations(lang) {
+      const translation = translations[lang] || translations['pt'];
+      
+      // Atualiza os textos estáticos
+      Object.keys(translation).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+          element.textContent = translation[key];
+        }
+      });
+      
+      // Atualiza placeholders
+      const textareas = document.querySelectorAll('textarea, input[type="text"]');
+      textareas.forEach(el => {
+        const placeholderKey = el.getAttribute(`data-placeholder-${lang}`);
+        if (placeholderKey) {
+          el.placeholder = placeholderKey;
+        }
+      });
+    }
+
+    function openTab(tabName) {
+      // Esconde todos os conteúdos de abas
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Remove a classe active de todos os botões
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Mostra a aba selecionada
+      document.getElementById(tabName).classList.add('active');
+      
+      // Ativa o botão correspondente
+      document.querySelector(`.tab-btn[onclick="openTab('${tabName}')"]`).classList.add('active');
+    }
+
+    // Envia mensagem para a IA
+    async function sendMessage() {
+      const userInput = document.getElementById('user-input');
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      addMessage(message, 'user');
+      userInput.value = '';
+
+      const model = document.querySelector('.model-btn.active').dataset.model;
+      const btnText = document.getElementById('btn-text');
+      const btnLoader = document.getElementById('btn-loader');
+
+      btnText.style.display = 'none';
+      btnLoader.style.display = 'inline-block';
+
+      try {
+        const response = await puter.ai.chat(message, { model: model });
+        addMessage(response, 'bot');
+      } catch (error) {
+        addMessage("Erro ao conectar com a IA. Tente novamente.", 'bot');
+        console.error("Erro no chat:", error);
+      } finally {
+        btnText.style.display = 'inline-block';
+        btnLoader.style.display = 'none';
+      }
+    }
+
+    // Gera imagem com base no prompt
+    function generateImage() {
+      const prompt = document.getElementById('imagePrompt').value;
+      const service = document.getElementById('imageService').value;
+      const resultDiv = document.getElementById('imageResult');
+
+      resultDiv.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Gerando imagem...</p>';
+      
+      const img = document.createElement('img');
+      img.src = imageServices[service](prompt);
+      img.alt = prompt || "Imagem gerada";
+      img.style.maxWidth = '100%';
+      img.style.height = 'auto';
+      
+      img.onload = () => {
+        resultDiv.innerHTML = '';
+        resultDiv.appendChild(img);
+        document.getElementById('image-actions').style.display = 'flex';
+      };
+      
+      img.onerror = () => {
+        resultDiv.innerHTML = '<p class="error-message"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar a imagem. Tente outro serviço ou prompt.</p>';
+      };
+    }
+
+    // Gera vídeo com base no prompt
+    function generateVideo() {
+      const prompt = document.getElementById('videoPrompt').value;
+      const service = document.getElementById('videoService').value;
+      const resultDiv = document.getElementById('videoResult');
+
+      resultDiv.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Gerando vídeo...</p>';
+      
+      // Limpa resultados anteriores
+      while (resultDiv.firstChild) {
+        resultDiv.removeChild(resultDiv.firstChild);
+      }
+      
+      const videoUrl = videoServices[service](prompt);
+      
+      if (videoUrl.includes('vimeo.com')) {
+        // Embed do Vimeo
+        const iframe = document.createElement('iframe');
+        iframe.src = videoUrl;
+        iframe.width = '800';
+        iframe.height = '450';
+        iframe.frameBorder = '0';
+        iframe.allow = 'autoplay; fullscreen';
+        iframe.allowFullscreen = true;
+        
+        iframe.onload = () => {
+          resultDiv.innerHTML = '';
+          resultDiv.appendChild(iframe);
+          document.getElementById('video-actions').style.display = 'flex';
+        };
+        
+        iframe.onerror = () => {
+          resultDiv.innerHTML = '<p class="error-message"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar o vídeo. Tente outro serviço.</p>';
+        };
+      } else {
+        // Vídeo direto
+        const video = document.createElement('video');
+        video.src = videoUrl;
+        video.controls = true;
+        video.width = '800';
+        video.height = '450';
+        
+        video.onloadeddata = () => {
+          resultDiv.innerHTML = '';
+          resultDiv.appendChild(video);
+          document.getElementById('video-actions').style.display = 'flex';
+        };
+        
+        video.onerror = () => {
+          resultDiv.innerHTML = '<p class="error-message"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar o vídeo. Tente outro serviço.</p>';
+        };
+      }
+    }
+
+    // Adiciona mensagem ao chat
+    function addMessage(text, sender) {
+      const chatArea = document.getElementById('chat-area');
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', sender + '-message');
+      messageDiv.textContent = text;
+      chatArea.appendChild(messageDiv);
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    // Limpa o chat
+    function clearChat() {
+      document.getElementById('chat-area').innerHTML = '';
+    }
+
+    // Gera um prompt aleatório
+    function randomPrompt(type) {
+      const prompts = {
+        image: [
+          "Um pôr do sol sobre montanhas com reflexo no lago",
+          "Gato astronauta no espaço com estrelas ao fundo",
+          "Cidade futurista com arranha-céus brilhantes",
+          "Praia tropical com coqueiros e mar azul cristalino",
+          "Floresta encantada com luzes de fadas e cogumelos gigantes"
+        ],
+        video: [
+          "Pôr do sol na praia",
+          "Floresta tropical",
+          "Cidade movimentada",
+          "Animais selvagens",
+          "Montanhas cobertas de neve"
+        ]
+      };
+      
+      const promptField = type === 'image' ? 'imagePrompt' : 'videoPrompt';
+      const randomIndex = Math.floor(Math.random() * prompts[type].length);
+      document.getElementById(promptField).value = prompts[type][randomIndex];
+    }
+
+    // Baixa a mídia gerada
+    function downloadMedia(type) {
+      const container = type === 'image' ? 'imageResult' : 'videoResult';
+      const element = document.getElementById(container).querySelector('img, video, iframe');
+      
+      if (!element) return;
+      
+      let url;
+      if (element.tagName === 'IMG') {
+        url = element.src;
+      } else if (element.tagName === 'VIDEO') {
+        url = element.src;
+      } else if (element.tagName === 'IFRAME') {
+        alert("Para baixar vídeos do Vimeo, visite o site original.");
+        return;
+      }
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `vilorchat-${type}-${new Date().getTime()}.${type === 'image' ? 'jpg' : 'mp4'}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Compartilha a mídia gerada
+    function shareMedia(type) {
+      const container = type === 'image' ? 'imageResult' : 'videoResult';
+      const element = document.getElementById(container).querySelector('img, video, iframe');
+      
+      if (!element) return;
+      
+      let url;
+      if (element.tagName === 'IMG') {
+        url = element.src;
+      } else if (element.tagName === 'VIDEO') {
+        url = element.src;
+      } else if (element.tagName === 'IFRAME') {
+        url = element.src;
+      }
+      
+      if (navigator.share) {
+        navigator.share({
+          title: `VilorChat ${type === 'image' ? 'Image' : 'Video'}`,
+          text: `Confira esta ${type === 'image' ? 'imagem' : 'vídeo'} gerada pelo VilorChat`,
+          url: url
+        }).catch(err => {
+          console.log('Erro ao compartilhar:', err);
+        });
+      } else {
+        // Fallback para copiar o link
+        navigator.clipboard.writeText(url).then(() => {
+          alert("Link copiado para a área de transferência!");
+        });
+      }
+    }
+
+    // Seleciona modelo de IA
+    document.querySelectorAll('.model-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.model-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+      loadLanguage();
+      
+      // Permite enviar mensagem com Enter
+      document.getElementById('user-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+      
+      // Exemplo de mensagem inicial
+      setTimeout(() => {
+        addMessage("Olá! Sou o VilorChat, como posso ajudar você hoje?", 'bot');
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
