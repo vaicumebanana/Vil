@@ -237,7 +237,7 @@
       flex-direction: column;
     }
     
-    .media-container img, .media-container video {
+    .media-container img {
       max-width: 100%;
       max-height: 600px;
       border-radius: 8px;
@@ -247,13 +247,8 @@
       transition: transform 0.3s;
     }
     
-    .media-container img:hover, .media-container video:hover {
+    .media-container img:hover {
       transform: scale(1.02);
-    }
-    
-    .media-container video {
-      width: 100%;
-      height: auto;
     }
     
     .loading {
@@ -475,7 +470,7 @@
   <div class="container">
     <div class="card">
       <h1 id="main-title">VilorChat Premium</h1>
-      <p id="main-subtitle">IA Avançada com Geradores de Imagem, Vídeos e Modelos de Linguagem</p>
+      <p id="main-subtitle">IA Avançada com Geradores de Imagem e Modelos de Linguagem</p>
     </div>
 
     <div class="card">
@@ -498,7 +493,7 @@
         </button>
         
         <button onclick="clearChat()" class="secondary">
-          <i class="fas fa-trash"></i> Limpar
+          <i class="fas fa-trash"></i> <span id="clear-chat-text">Limpar</span>
         </button>
       </div>
     </div>
@@ -507,9 +502,6 @@
       <div class="tab-buttons">
         <button class="tab-btn active" onclick="openTab('images')" id="images-tab">
           <i class="fas fa-image"></i> <span id="images-tab-text">Imagens</span>
-        </button>
-        <button class="tab-btn" onclick="openTab('videos')" id="videos-tab">
-          <i class="fas fa-video"></i> <span id="videos-tab-text">Vídeos</span>
         </button>
       </div>
 
@@ -540,54 +532,20 @@
           </button>
           
           <button onclick="randomPrompt('image')" class="secondary">
-            <i class="fas fa-random"></i> Aleatório
+            <i class="fas fa-random"></i> <span id="random-prompt-text">Aleatório</span>
           </button>
         </div>
         
         <div class="media-container" id="imageResult">
-          <p id="image-placeholder"><i class="fas fa-image fa-3x" style="color: #e0e0e0; margin-bottom: 15px;"></i><br>Sua imagem aparecerá aqui</p>
+          <p id="image-placeholder"><i class="fas fa-image fa-3x" style="color: #e0e0e0; margin-bottom: 15px;"></i><br><span id="image-placeholder-text">Sua imagem aparecerá aqui</span></p>
         </div>
         
         <div class="media-actions" id="image-actions" style="display: none;">
           <button onclick="downloadMedia('image')" class="secondary">
-            <i class="fas fa-download"></i> Baixar
+            <i class="fas fa-download"></i> <span id="download-text">Baixar</span>
           </button>
           <button onclick="shareMedia('image')" class="secondary">
-            <i class="fas fa-share-alt"></i> Compartilhar
-          </button>
-        </div>
-      </div>
-
-      <div id="videos" class="tab-content">
-        <h2 id="videos-title"><i class="fas fa-video"></i> Gerador de Vídeos</h2>
-        
-        <select id="videoService">
-          <option value="pexels">1. Pexels (Natureza)</option>
-          <option value="pixabay">2. Pixabay (Stock)</option>
-          <option value="coverr">3. Coverr (Abstrato)</option>
-          <option value="lifeofvids">4. Life of Vids (Realista)</option>
-          <option value="videvo">5. Videvo (Variado)</option>
-        </select>
-        
-        <div class="tooltip" style="width: 100%;">
-          <input type="text" id="videoPrompt" placeholder="Tema do vídeo (ex: praia, cidade, animais)..." data-placeholder-pt="Tema do vídeo..." data-placeholder-ru="Тема видео..." data-placeholder-en="Video theme..." data-placeholder-es="Tema del video..." data-placeholder-zh="视频主题...">
-          <span class="tooltiptext">Digite palavras-chave relacionadas ao vídeo que deseja</span>
-        </div>
-        
-        <button onclick="generateVideo()" id="generate-video-btn">
-          <i class="fas fa-film"></i> <span id="generate-video-text">Gerar Vídeo</span>
-        </button>
-        
-        <div class="media-container" id="videoResult">
-          <p id="video-placeholder"><i class="fas fa-video fa-3x" style="color: #e0e0e0; margin-bottom: 15px;"></i><br>Seu vídeo aparecerá aqui</p>
-        </div>
-        
-        <div class="media-actions" id="video-actions" style="display: none;">
-          <button onclick="downloadMedia('video')" class="secondary">
-            <i class="fas fa-download"></i> Baixar
-          </button>
-          <button onclick="shareMedia('video')" class="secondary">
-            <i class="fas fa-share-alt"></i> Compartilhar
+            <i class="fas fa-share-alt"></i> <span id="share-text">Compartilhar</span>
           </button>
         </div>
       </div>
@@ -599,73 +557,73 @@
     const translations = {
       pt: {
         "main-title": "VilorChat Premium",
-        "main-subtitle": "IA Avançada com Geradores de Imagem, Vídeos e Modelos de Linguagem",
+        "main-subtitle": "IA Avançada com Geradores de Imagem e Modelos de Linguagem",
         "llm-title": "Chat com IA",
         "images-title": "Gerador de Imagens",
-        "videos-title": "Gerador de Vídeos",
         "btn-text": "Enviar",
+        "clear-chat-text": "Limpar",
         "generate-image-text": "Gerar Imagem",
-        "generate-video-text": "Gerar Vídeo",
-        "image-placeholder": "Sua imagem aparecerá aqui",
-        "video-placeholder": "Seu vídeo aparecerá aqui",
+        "image-placeholder-text": "Sua imagem aparecerá aqui",
         "images-tab-text": "Imagens",
-        "videos-tab-text": "Vídeos"
+        "random-prompt-text": "Aleatório",
+        "download-text": "Baixar",
+        "share-text": "Compartilhar"
       },
       en: {
         "main-title": "VilorChat Premium",
-        "main-subtitle": "Advanced AI with Image Generators, Videos and Language Models",
+        "main-subtitle": "Advanced AI with Image Generators and Language Models",
         "llm-title": "AI Chat",
         "images-title": "Image Generator",
-        "videos-title": "Video Generator",
         "btn-text": "Send",
+        "clear-chat-text": "Clear",
         "generate-image-text": "Generate Image",
-        "generate-video-text": "Generate Video",
-        "image-placeholder": "Your image will appear here",
-        "video-placeholder": "Your video will appear here",
+        "image-placeholder-text": "Your image will appear here",
         "images-tab-text": "Images",
-        "videos-tab-text": "Videos"
+        "random-prompt-text": "Random",
+        "download-text": "Download",
+        "share-text": "Share"
       },
       es: {
         "main-title": "VilorChat Premium",
-        "main-subtitle": "IA avanzada con generadores de imágenes, videos y modelos de lenguaje",
+        "main-subtitle": "IA avanzada con generadores de imágenes y modelos de lenguaje",
         "llm-title": "Chat con IA",
         "images-title": "Generador de Imágenes",
-        "videos-title": "Generador de Videos",
         "btn-text": "Enviar",
+        "clear-chat-text": "Limpiar",
         "generate-image-text": "Generar Imagen",
-        "generate-video-text": "Generar Video",
-        "image-placeholder": "Tu imagen aparecerá aquí",
-        "video-placeholder": "Tu video aparecerá aquí",
+        "image-placeholder-text": "Tu imagen aparecerá aquí",
         "images-tab-text": "Imágenes",
-        "videos-tab-text": "Videos"
+        "random-prompt-text": "Aleatorio",
+        "download-text": "Descargar",
+        "share-text": "Compartir"
       },
       ru: {
         "main-title": "VilorChat Premium",
-        "main-subtitle": "Продвинутый ИИ с генераторами изображений, видео и языковыми моделями",
+        "main-subtitle": "Продвинутый ИИ с генераторами изображений и языковыми моделями",
         "llm-title": "Чат с ИИ",
         "images-title": "Генератор изображений",
-        "videos-title": "Генератор видео",
         "btn-text": "Отправить",
+        "clear-chat-text": "Очистить",
         "generate-image-text": "Создать изображение",
-        "generate-video-text": "Создать видео",
-        "image-placeholder": "Здесь появится ваше изображение",
-        "video-placeholder": "Здесь появится ваше видео",
+        "image-placeholder-text": "Здесь появится ваше изображение",
         "images-tab-text": "Изображения",
-        "videos-tab-text": "Видео"
+        "random-prompt-text": "Случайный",
+        "download-text": "Скачать",
+        "share-text": "Поделиться"
       },
       zh: {
         "main-title": "VilorChat Premium",
-        "main-subtitle": "具有图像生成器、视频和语言模型的高级AI",
+        "main-subtitle": "具有图像生成器和语言模型的高级AI",
         "llm-title": "AI聊天",
         "images-title": "图像生成器",
-        "videos-title": "视频生成器",
         "btn-text": "发送",
+        "clear-chat-text": "清除",
         "generate-image-text": "生成图像",
-        "generate-video-text": "生成视频",
-        "image-placeholder": "您的图像将出现在这里",
-        "video-placeholder": "您的视频将出现在这里",
+        "image-placeholder-text": "您的图像将出现在这里",
         "images-tab-text": "图像",
-        "videos-tab-text": "视频"
+        "random-prompt-text": "随机",
+        "download-text": "下载",
+        "share-text": "分享"
       }
     };
 
@@ -683,42 +641,27 @@
       placeholder: () => `https://via.placeholder.com/800x500.png?text=${encodeURIComponent("Sample+Image")}`
     };
 
-    // Serviços de Vídeo com APIs públicas
-    const videoServices = {
-      pexels: prompt => {
-        const videos = [
-          'https://player.vimeo.com/video/320012617', // Praia
-          'https://player.vimeo.com/video/320012616', // Floresta
-          'https://player.vimeo.com/video/320012619', // Montanhas
-          'https://player.vimeo.com/video/320012618', // Cachoeira
-          'https://player.vimeo.com/video/320012620'  // Cidade
-        ];
-        return videos[Math.floor(Math.random() * videos.length)];
-      },
-      pixabay: prompt => {
-        const videos = [
-          'https://player.vimeo.com/video/818490281', // Natureza
-          'https://player.vimeo.com/video/824804225', // Cidade
-          'https://player.vimeo.com/video/353963087', // Abstrato
-          'https://player.vimeo.com/video/427179745', // Pessoas
-          'https://player.vimeo.com/video/151715092'  // Animais
-        ];
-        return videos[Math.floor(Math.random() * videos.length)];
-      },
-      coverr: () => 'https://coverr.co/videos/beach-clouds-daytime-DFJXG3jJuP',
-      lifeofvids: () => 'https://player.vimeo.com/video/151715092',
-      videvo: () => 'https://player.vimeo.com/video/371594396'
-    };
+    // Variáveis globais
+    let currentLanguage = 'pt';
+    let originalMessages = [];
+    let isTranslating = false;
 
     // ====== FUNÇÕES PRINCIPAIS ======
     function changeLanguage() {
       const lang = document.getElementById('language-select').value;
+      currentLanguage = lang;
       localStorage.setItem('language', lang);
       applyTranslations(lang);
+      
+      // Traduz o chat apenas se não for a primeira carga
+      if (originalMessages.length > 0) {
+        translateChat();
+      }
     }
 
     function loadLanguage() {
       const savedLang = localStorage.getItem('language') || 'pt';
+      currentLanguage = savedLang;
       document.getElementById('language-select').value = savedLang;
       applyTranslations(savedLang);
     }
@@ -764,10 +707,18 @@
 
     // Envia mensagem para a IA
     async function sendMessage() {
+      if (isTranslating) return;
+      
       const userInput = document.getElementById('user-input');
       const message = userInput.value.trim();
       if (!message) return;
 
+      // Salva a mensagem original
+      originalMessages.push({
+        text: message,
+        sender: 'user'
+      });
+      
       addMessage(message, 'user');
       userInput.value = '';
 
@@ -780,13 +731,108 @@
 
       try {
         const response = await puter.ai.chat(message, { model: model });
+        
+        // Salva a resposta original
+        originalMessages.push({
+          text: response,
+          sender: 'bot'
+        });
+        
         addMessage(response, 'bot');
+        
+        // Envia o histórico completo para o Puter
+        await sendChatHistoryToPuter();
       } catch (error) {
-        addMessage("Erro ao conectar com a IA. Tente novamente.", 'bot');
+        const errorMsg = "Erro ao conectar com a IA. Tente novamente.";
+        originalMessages.push({
+          text: errorMsg,
+          sender: 'bot'
+        });
+        addMessage(errorMsg, 'bot');
         console.error("Erro no chat:", error);
       } finally {
         btnText.style.display = 'inline-block';
         btnLoader.style.display = 'none';
+      }
+    }
+
+    // Envia o histórico do chat para o Puter
+    async function sendChatHistoryToPuter() {
+      try {
+        const chatHistory = {
+          messages: originalMessages,
+          language: currentLanguage,
+          timestamp: new Date().toISOString()
+        };
+        
+        // Aqui você pode enviar o histórico para onde precisar no Puter
+        // Por exemplo, salvando em um arquivo ou banco de dados
+        console.log("Histórico do chat para Puter:", chatHistory);
+        // await puter.fs.writeFile('/chat_history.json', JSON.stringify(chatHistory));
+        
+      } catch (error) {
+        console.error("Erro ao enviar histórico para o Puter:", error);
+      }
+    }
+
+    // Traduz o chat usando a API LibreTranslate
+    async function translateChat() {
+      if (isTranslating || originalMessages.length === 0) return;
+      
+      isTranslating = true;
+      const chatArea = document.getElementById('chat-area');
+      const lang = currentLanguage;
+      
+      try {
+        // Limpa o chat area
+        chatArea.innerHTML = '';
+        
+        // API LibreTranslate (pública)
+        const LIBRE_TRANSLATE_API = "https://libretranslate.de/translate";
+        
+        // Traduz cada mensagem individualmente
+        for (const msg of originalMessages) {
+          if (lang === 'pt') {
+            // Se for português, mostra o texto original
+            addMessage(msg.text, msg.sender);
+            continue;
+          }
+          
+          try {
+            const response = await fetch(LIBRE_TRANSLATE_API, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                q: msg.text,
+                source: "auto",
+                target: lang
+              })
+            });
+            
+            const data = await response.json();
+            
+            if (data.translatedText) {
+              addMessage(data.translatedText, msg.sender);
+            } else {
+              // Se falhar, mostra o texto original
+              addMessage(msg.text, msg.sender);
+            }
+          } catch (e) {
+            console.error("Erro ao traduzir mensagem:", e);
+            addMessage(msg.text, msg.sender);
+          }
+        }
+      } catch (error) {
+        console.error("Erro na tradução:", error);
+        // Se falhar completamente, recria o chat com as mensagens originais
+        chatArea.innerHTML = '';
+        originalMessages.forEach(msg => {
+          addMessage(msg.text, msg.sender);
+        });
+      } finally {
+        isTranslating = false;
       }
     }
 
@@ -815,60 +861,6 @@
       };
     }
 
-    // Gera vídeo com base no prompt
-    function generateVideo() {
-      const prompt = document.getElementById('videoPrompt').value;
-      const service = document.getElementById('videoService').value;
-      const resultDiv = document.getElementById('videoResult');
-
-      resultDiv.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Gerando vídeo...</p>';
-      
-      // Limpa resultados anteriores
-      while (resultDiv.firstChild) {
-        resultDiv.removeChild(resultDiv.firstChild);
-      }
-      
-      const videoUrl = videoServices[service](prompt);
-      
-      if (videoUrl.includes('vimeo.com')) {
-        // Embed do Vimeo
-        const iframe = document.createElement('iframe');
-        iframe.src = videoUrl;
-        iframe.width = '800';
-        iframe.height = '450';
-        iframe.frameBorder = '0';
-        iframe.allow = 'autoplay; fullscreen';
-        iframe.allowFullscreen = true;
-        
-        iframe.onload = () => {
-          resultDiv.innerHTML = '';
-          resultDiv.appendChild(iframe);
-          document.getElementById('video-actions').style.display = 'flex';
-        };
-        
-        iframe.onerror = () => {
-          resultDiv.innerHTML = '<p class="error-message"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar o vídeo. Tente outro serviço.</p>';
-        };
-      } else {
-        // Vídeo direto
-        const video = document.createElement('video');
-        video.src = videoUrl;
-        video.controls = true;
-        video.width = '800';
-        video.height = '450';
-        
-        video.onloadeddata = () => {
-          resultDiv.innerHTML = '';
-          resultDiv.appendChild(video);
-          document.getElementById('video-actions').style.display = 'flex';
-        };
-        
-        video.onerror = () => {
-          resultDiv.innerHTML = '<p class="error-message"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar o vídeo. Tente outro serviço.</p>';
-        };
-      }
-    }
-
     // Adiciona mensagem ao chat
     function addMessage(text, sender) {
       const chatArea = document.getElementById('chat-area');
@@ -882,6 +874,9 @@
     // Limpa o chat
     function clearChat() {
       document.getElementById('chat-area').innerHTML = '';
+      originalMessages = [];
+      // Também limpa o histórico no Puter
+      sendChatHistoryToPuter();
     }
 
     // Gera um prompt aleatório
@@ -893,41 +888,25 @@
           "Cidade futurista com arranha-céus brilhantes",
           "Praia tropical com coqueiros e mar azul cristalino",
           "Floresta encantada com luzes de fadas e cogumelos gigantes"
-        ],
-        video: [
-          "Pôr do sol na praia",
-          "Floresta tropical",
-          "Cidade movimentada",
-          "Animais selvagens",
-          "Montanhas cobertas de neve"
         ]
       };
       
-      const promptField = type === 'image' ? 'imagePrompt' : 'videoPrompt';
+      const promptField = 'imagePrompt';
       const randomIndex = Math.floor(Math.random() * prompts[type].length);
       document.getElementById(promptField).value = prompts[type][randomIndex];
     }
 
     // Baixa a mídia gerada
     function downloadMedia(type) {
-      const container = type === 'image' ? 'imageResult' : 'videoResult';
-      const element = document.getElementById(container).querySelector('img, video, iframe');
+      const container = 'imageResult';
+      const element = document.getElementById(container).querySelector('img');
       
       if (!element) return;
       
-      let url;
-      if (element.tagName === 'IMG') {
-        url = element.src;
-      } else if (element.tagName === 'VIDEO') {
-        url = element.src;
-      } else if (element.tagName === 'IFRAME') {
-        alert("Para baixar vídeos do Vimeo, visite o site original.");
-        return;
-      }
-      
+      const url = element.src;
       const a = document.createElement('a');
       a.href = url;
-      a.download = `vilorchat-${type}-${new Date().getTime()}.${type === 'image' ? 'jpg' : 'mp4'}`;
+      a.download = `vilorchat-${type}-${new Date().getTime()}.jpg`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -935,19 +914,12 @@
 
     // Compartilha a mídia gerada
     function shareMedia(type) {
-      const container = type === 'image' ? 'imageResult' : 'videoResult';
-      const element = document.getElementById(container).querySelector('img, video, iframe');
+      const container = 'imageResult';
+      const element = document.getElementById(container).querySelector('img');
       
       if (!element) return;
       
-      let url;
-      if (element.tagName === 'IMG') {
-        url = element.src;
-      } else if (element.tagName === 'VIDEO') {
-        url = element.src;
-      } else if (element.tagName === 'IFRAME') {
-        url = element.src;
-      }
+      const url = element.src;
       
       if (navigator.share) {
         navigator.share({
@@ -987,7 +959,12 @@
       
       // Exemplo de mensagem inicial
       setTimeout(() => {
-        addMessage("Olá! Sou o VilorChat, como posso ajudar você hoje?", 'bot');
+        const welcomeMsg = "Olá! Sou o VilorChat, como posso ajudar você hoje?";
+        originalMessages.push({
+          text: welcomeMsg,
+          sender: 'bot'
+        });
+        addMessage(welcomeMsg, 'bot');
       }, 1000);
     });
   </script>
